@@ -17,4 +17,10 @@ public class ContaController {
         contaService.salvarConta(conta);
         return conta;
     }
+
+    @GetMapping
+    public Iterable<Conta> exibirTodasAsContas() {
+        return contaService.buscarTodasAsContas();
+    }
+
 }
