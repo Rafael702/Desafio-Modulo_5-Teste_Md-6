@@ -49,7 +49,6 @@ public class ContaControllerTeste {
         conta.setValor(260);
         conta.setTipo(Tipo.LUZ);
         conta.setDataDeVencimento(LocalDate.of(2021, Month.DECEMBER, 24));
-        conta.setStatus(Status.AGUARDANDO);
         conta.setDataDePagamento(null);
 
         contas = Arrays.asList(conta);
