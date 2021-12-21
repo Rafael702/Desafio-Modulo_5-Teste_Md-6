@@ -84,31 +84,3 @@ Status 200
 }
 
 IMPORTANTE: SEMPRE QUE UMA CONTA FOR PAGA O CAMPO dateDePagamento DEVE SER PREENCHIDA **PELO SISTEMA** 
-
-Entrega MÉDIA
-O sistema realiza todas as validações de campos obrigatórios para cadastrar uma conta. São eles; NOME, VALOR, TIPO e **Data de Vencimento.**
-
-O sistema responderá de forma coerente todos os erros de validação como por exemplo 422 para erros causados por validação ou 404 quando cliente tentar atualizar uma conta que não existe. Para isso será necessário o controller advice. 
-
-O sistema também permitirá visualizar uma conta específica com todos os detalhes. 
-
-**IMPORTANTE**: Entrega média válida APENAS se a mínima estiver perfeita.
-
-Entrega Maxima.
-
-O sistema deve permitir que sejam feitos alguns filtros na lista de contas. 
-
-1 - filtro de contas por status2 - filtro de contas por tipo 3 - filtro de contas com valor APROXIMADO (use o @QUERY é bem mais fácil para fazer isso).
-
-Por fim, o sistema deve permitir DELETAR uma conta caso seja necessário. A requisição deve seguir o seguinte padrão. 
-Endpoint: /contas/{id}Verbo HTTP: DELETE
-Resposta Status 204
-
-**IMPORTANTE**: Entrega máxima válida APENAS se a média estiver perfeita.
-
-
-
-
-
-
-
