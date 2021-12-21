@@ -4,7 +4,6 @@ import br.com.zup.DesafioModulo5_TesteMd6.conta.Conta;
 import br.com.zup.DesafioModulo5_TesteMd6.conta.ContaController;
 import br.com.zup.DesafioModulo5_TesteMd6.conta.ContaService;
 import br.com.zup.DesafioModulo5_TesteMd6.conta.dtos.ContaDTO;
-import br.com.zup.DesafioModulo5_TesteMd6.enums.Status;
 import br.com.zup.DesafioModulo5_TesteMd6.enums.Tipo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -67,4 +66,13 @@ public class ContaControllerTeste {
 
     }
 
+    @Test
+    public void testarBuscaDeTodasAsContas() throws Exception {
+        Mockito.when(contaService.buscarTodasAsContas()).thenReturn(Arrays.asList(conta));
+
+        ResultActions resultActions = mockMvc.perform (MockMvcRequestBuilders.get("/contas")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
+    }
 }
