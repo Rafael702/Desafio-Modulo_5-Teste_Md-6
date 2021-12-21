@@ -52,4 +52,15 @@ public class ContaServiceTeste {
         Assertions.assertTrue(contaCadastrada.getDataDeVencimento().isBefore(dataAtual));
         Assertions.assertEquals(contaCadastrada.getStatus(), Status.VENCIDA);
     }
+
+    @Test
+    public void testarStatusDaContaCadastradaComoAguardando() {
+        LocalDate dataAtual = LocalDate.now();
+        Mockito.when(contaRepository.save(Mockito.any(Conta.class))).thenReturn(conta);
+
+        Conta contaCadastrada = contaService.salvarConta(conta);
+
+        Assertions.assertFalse(contaCadastrada.getDataDeVencimento().isBefore(dataAtual));
+        Assertions.assertEquals(contaCadastrada.getStatus(), Status.AGUARDANDO);
+    }
 }
