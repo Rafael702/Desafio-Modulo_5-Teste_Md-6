@@ -40,10 +40,8 @@ public class ContaServiceTeste {
 
     }
 
-
-
     @Test
-    public void testarStatusDaContaCadastrada() {
+    public void testarStatusDaContaCadastradaComoVencida() {
         conta = new Conta();
         conta.setDataDeVencimento(LocalDate.of(2021, Month.DECEMBER, 19));
         LocalDate dataAtual = LocalDate.now();
