@@ -40,4 +40,18 @@ public class ContaServiceTeste {
 
     }
 
+
+
+    @Test
+    public void testarStatusDaContaCadastrada() {
+        conta = new Conta();
+        conta.setDataDeVencimento(LocalDate.of(2021, Month.DECEMBER, 19));
+        LocalDate dataAtual = LocalDate.now();
+        Mockito.when(contaRepository.save(Mockito.any(Conta.class))).thenReturn(conta);
+
+        Conta contaCadastrada = contaService.salvarConta(conta);//PEGAR O SET DO STATUS
+
+        Assertions.assertTrue(contaCadastrada.getDataDeVencimento().isBefore(dataAtual));
+        Assertions.assertEquals(contaCadastrada.getStatus(), Status.VENCIDA);
+    }
 }
