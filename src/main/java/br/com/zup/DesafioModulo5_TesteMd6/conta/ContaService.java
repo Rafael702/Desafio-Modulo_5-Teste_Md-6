@@ -24,4 +24,8 @@ public class ContaService {
         return conta;
     }
 
+    public Iterable<Conta> buscarTodasAsContas() {
+        return contaRepository.findAll();
+    }
+
 }
