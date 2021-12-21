@@ -55,5 +55,16 @@ public class ContaControllerTeste {
         contas = Arrays.asList(conta);
     }
 
+    @Test
+    public void testarCadastroDeContas() throws Exception {
+        Mockito.when(contaService.salvarConta(Mockito.any(Conta.class))).thenReturn(conta);
+        String json = objectMapper.writeValueAsString(conta);
+
+        ResultActions resultadoDaRequisicao =
+                mockMvc.perform(MockMvcRequestBuilders.post("/contas/cadastro")
+                                .content(json).contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(MockMvcResultMatchers.status().is(201))
+                        .andExpect(MockMvcResultMatchers.jsonPath("$").isMap());
+    }
 
 }
