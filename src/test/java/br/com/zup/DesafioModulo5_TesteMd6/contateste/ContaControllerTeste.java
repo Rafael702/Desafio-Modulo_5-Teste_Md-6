@@ -1,5 +1,6 @@
 package br.com.zup.DesafioModulo5_TesteMd6.contateste;
 
+import br.com.zup.DesafioModulo5_TesteMd6.componentes.Conversor;
 import br.com.zup.DesafioModulo5_TesteMd6.conta.Conta;
 import br.com.zup.DesafioModulo5_TesteMd6.conta.ContaController;
 import br.com.zup.DesafioModulo5_TesteMd6.conta.ContaService;
@@ -23,7 +24,7 @@ import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 
-@WebMvcTest(ContaController.class)
+@WebMvcTest({ContaController.class, Conversor.class})
 public class ContaControllerTeste {
 
     @MockBean
@@ -68,11 +69,23 @@ public class ContaControllerTeste {
 
     @Test
     public void testarBuscaDeTodasAsContas() throws Exception {
-        Mockito.when(contaService.buscarTodasAsContas()).thenReturn(Arrays.asList(conta));
+        Mockito.when(contaService.exibirTodasAsContas()).thenReturn(contas);
 
-        ResultActions resultActions = mockMvc.perform (MockMvcRequestBuilders.get("/contas")
-                .contentType(MediaType.APPLICATION_JSON))
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/contas")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
     }
+
+    @Test
+    public void testarBuscaDeTodasAsContasConstandoOCampoIDCaminhoBom() throws Exception {
+        Mockito.when(contaService.exibirTodasAsContas()).thenReturn(contas);
+
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/contas")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(conta.getId()));
+    }
+
+
 }
