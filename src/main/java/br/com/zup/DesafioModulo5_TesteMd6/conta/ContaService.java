@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ContaService {
@@ -28,5 +29,12 @@ public class ContaService {
     public List<Conta> exibirTodasAsContas() {
         return (List<Conta>) contaRepository.findAll();
     }
+
+    public Conta buscarConta(int id) {
+        Optional<Conta> contaOptional = contaRepository.findById(id);
+
+        return contaOptional.get();
+    }
+
 
 }
