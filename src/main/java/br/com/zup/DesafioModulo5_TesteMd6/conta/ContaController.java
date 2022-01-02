@@ -38,4 +38,11 @@ public class ContaController {
 
         return listaContaSaidaDTOS;
     }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Conta pagarConta(@PathVariable int id) {
+        Conta contaASerPaga = contaService.atualizarStatusDaConta(id);
+        return contaASerPaga;
+    }
 }
