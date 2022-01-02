@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,8 +34,20 @@ public class ContaService {
     public Conta buscarConta(int id) {
         Optional<Conta> contaOptional = contaRepository.findById(id);
 
+        if (contaOptional.isEmpty()) {
+            throw new RuntimeException("Não foi encontrado");
+        }
+
         return contaOptional.get();
     }
 
+    public Conta atualizarStatusDaConta(int id) {
+        Conta contaEncontrada = buscarConta(id);
+
+        contaEncontrada.setStatus(Status.PAGO);
+        contaEncontrada.setDataDePagamento(LocalDateTime.now());
+        contaRepository.save(contaEncontrada);
+        return contaEncontrada;
+    }
 
 }
