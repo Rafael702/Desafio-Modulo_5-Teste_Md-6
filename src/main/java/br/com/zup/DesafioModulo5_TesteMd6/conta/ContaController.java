@@ -1,11 +1,13 @@
 package br.com.zup.DesafioModulo5_TesteMd6.conta;
 
+import br.com.zup.DesafioModulo5_TesteMd6.conta.dtos.ContaDTO;
 import br.com.zup.DesafioModulo5_TesteMd6.conta.dtos.ContaSaidaDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,9 +23,10 @@ public class ContaController {
 
     @PostMapping("/cadastro")
     @ResponseStatus(HttpStatus.CREATED)
-    public Conta cadastrarConta(@RequestBody Conta conta) {
+    public ContaDTO cadastrarConta(@RequestBody @Valid ContaDTO contaDTO) {
+        Conta conta = modelMapper.map(contaDTO, Conta.class);
         contaService.salvarConta(conta);
-        return conta;
+        return modelMapper.map(conta, ContaDTO.class);
     }
 
     @GetMapping
