@@ -2,7 +2,21 @@
 
 Faça uma API para gerenciar as terríveis contas que devemos pagar todos os meses. Essa API deve funcionar como um organizador, dessa forma ela vai permitir cadastrar, visualizar, atualizar e deletar contas do sistema (nosso famoso CRUD).
 
-Cadastrando a conta: Toda conta do sistema deve ter:tipo: ENUMnome: Stringvalor: doubledataDeVencimento: LocalDatedataDePagamento: LocalDateTimestatus: ENUM
+Cadastrando a conta: 
+
+Toda conta do sistema deve ter:
+
+tipo: ENUM
+
+nome:String
+
+valor:double
+
+dataDeVencimento: LocalDate
+
+dataDePagamento: LocalDateTime
+
+status: ENUM
 Para cadastrar uma conta a requisição deve seguir o seguinte padrão: 
 Endpoint: /contasVerbo HTTP: 
 
@@ -45,7 +59,8 @@ corpo:
 
 
  Os Enum;
-O enum de **Status** deve conter as opções; **AGUARDANDO, PAGO e VENCIDA**;O enum de **Tipo** deve conter as opções; **LUZ, AGUA, COMIDA, LASER e OUTROS**
+O enum de **Status** deve conter as opções; **AGUARDANDO, PAGO e VENCIDA**;
+O enum de **Tipo** deve conter as opções; **LUZ, AGUA, COMIDA, LASER e OUTROS**
 
 Entrega Mínima:
 O sistema deve permitir que uma conta seja cadastrada no sistema. Sempre que uma conta com a data de vencimento for anterior ao dia do cadastro será preenchido AUTOMATICAMENTE pelo sistema o STATUS VENCIDA, em todos os outros casos o STATUS padrão para as contas novas cadastradas é de AGUARDANDO. 

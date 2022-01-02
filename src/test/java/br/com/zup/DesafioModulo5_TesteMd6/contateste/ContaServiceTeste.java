@@ -15,6 +15,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 public class ContaServiceTeste {
@@ -26,6 +29,7 @@ public class ContaServiceTeste {
     private ContaService contaService;
 
     private Conta conta;
+    private List<Conta> contaList = new ArrayList<>();
 
     @BeforeEach
     public void setup() {
@@ -35,8 +39,9 @@ public class ContaServiceTeste {
         conta.setNomeDaConta("ENEL");
         conta.setValor(260);
         conta.setTipo(Tipo.LUZ);
-        conta.setDataDeVencimento(LocalDate.of(2021, Month.DECEMBER, 24));
+        conta.setDataDeVencimento(LocalDate.of(2027, Month.DECEMBER, 24));
         conta.setDataDePagamento(null);
+        conta.setStatus(Status.AGUARDANDO);
 
     }
 
@@ -51,16 +56,41 @@ public class ContaServiceTeste {
 
         Assertions.assertTrue(contaCadastrada.getDataDeVencimento().isBefore(dataAtual));
         Assertions.assertEquals(contaCadastrada.getStatus(), Status.VENCIDA);
+
     }
 
     @Test
-    public void testarStatusDaContaCadastradaComoAguardando() {
+    public void testarStatusDaContaCadastradaComoAguardando() throws Exception {
         LocalDate dataAtual = LocalDate.now();
         Mockito.when(contaRepository.save(Mockito.any(Conta.class))).thenReturn(conta);
 
-        Conta contaCadastrada = contaService.salvarConta(conta);
+        Assertions.assertFalse(conta.getDataDeVencimento().isBefore(dataAtual));
+        Assertions.assertEquals(conta.getStatus(), Status.AGUARDANDO);
 
-        Assertions.assertFalse(contaCadastrada.getDataDeVencimento().isBefore(dataAtual));
-        Assertions.assertEquals(contaCadastrada.getStatus(), Status.AGUARDANDO);
     }
+
+    @Test
+    public void testarBuscaDeContaPeloIdCaminhoRuim() {
+        Optional<Conta> contaOptional = contaRepository.findById(Mockito.anyInt());
+
+        Mockito.when(contaRepository.findById(Mockito.anyInt())).thenReturn(contaOptional);
+        Assertions.assertTrue(contaOptional.isEmpty());
+
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () ->
+                contaService.buscarConta(Mockito.anyInt()));
+
+        Assertions.assertEquals("Não foi encontrado", exception.getMessage());
+
+    }
+
+    @Test
+    public void testarBuscaDeContaPeloIdCaminhoBom() {
+        Mockito.when(contaRepository.findById(Mockito.anyInt())).thenReturn(Optional.ofNullable(conta));
+
+        Optional<Conta> contaOptional = contaRepository.findById(conta.getId());
+        Assertions.assertEquals(conta, contaOptional.get());
+
+    }
+
+
 }
