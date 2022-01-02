@@ -5,6 +5,7 @@ import br.com.zup.DesafioModulo5_TesteMd6.conta.Conta;
 import br.com.zup.DesafioModulo5_TesteMd6.conta.ContaController;
 import br.com.zup.DesafioModulo5_TesteMd6.conta.ContaService;
 import br.com.zup.DesafioModulo5_TesteMd6.conta.dtos.ContaDTO;
+import br.com.zup.DesafioModulo5_TesteMd6.enums.Status;
 import br.com.zup.DesafioModulo5_TesteMd6.enums.Tipo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,6 +51,7 @@ public class ContaControllerTeste {
         conta.setTipo(Tipo.LUZ);
         conta.setDataDeVencimento(LocalDate.of(2021, Month.DECEMBER, 24));
         conta.setDataDePagamento(null);
+        conta.setStatus(Status.AGUARDANDO);
 
         contas = Arrays.asList(conta);
     }
@@ -64,6 +66,8 @@ public class ContaControllerTeste {
                                 .content(json).contentType(MediaType.APPLICATION_JSON))
                         .andExpect(MockMvcResultMatchers.status().is(201))
                         .andExpect(MockMvcResultMatchers.jsonPath("$").isMap());
+
+        System.out.println(json);
 
     }
 
@@ -85,6 +89,52 @@ public class ContaControllerTeste {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(conta.getId()));
+    }
+
+//    @Test
+//    public void testarPagamentoDeConta() throws Exception {
+//        Mockito.when(contaService.atualizarStatusDaConta(Mockito.anyInt())).thenReturn(conta);
+//        conta = new Conta();
+//
+//        conta = contaService.atualizarStatusDaConta(Mockito.anyInt());
+//        String json = objectMapper.writeValueAsString(conta);
+//
+//        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.put("/contas/1")
+//                        .content(json).contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(MockMvcResultMatchers.status().is(200))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.status")
+//                        .value(Status.PAGO));
+//
+//        System.out.println(json);
+//
+//    }
+
+    @Test
+    public void testarValidacoesNoCadastroDasContasNomeNulo() throws Exception {
+        Conta conta = new Conta();
+        conta.setNomeDaConta(null);
+        Mockito.when(contaService.salvarConta(Mockito.any(Conta.class))).thenReturn(conta);
+        String json = objectMapper.writeValueAsString(conta);
+
+        ResultActions resultadoDaRequisicao =
+                mockMvc.perform(MockMvcRequestBuilders.post("/contas/cadastro")
+                                .content(json).contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(MockMvcResultMatchers.status().is(422));
+
+    }
+
+    @Test
+    public void testarValidacoesNoCadastroDasContasValorMenorOuIgualAZero() throws Exception {
+        Conta conta = new Conta();
+        conta.setValor(-1);
+        Mockito.when(contaService.salvarConta(Mockito.any(Conta.class))).thenReturn(conta);
+        String json = objectMapper.writeValueAsString(conta);
+
+        ResultActions resultadoDaRequisicao =
+                mockMvc.perform(MockMvcRequestBuilders.post("/contas/cadastro")
+                                .content(json).contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(MockMvcResultMatchers.status().is(422));
+
     }
 
 
