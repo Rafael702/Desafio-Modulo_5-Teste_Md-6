@@ -1,6 +1,7 @@
 package br.com.zup.DesafioModulo5_TesteMd6.conta;
 
 import br.com.zup.DesafioModulo5_TesteMd6.conta.dtos.ContaDTO;
+import br.com.zup.DesafioModulo5_TesteMd6.conta.dtos.ContaDetailsDTO;
 import br.com.zup.DesafioModulo5_TesteMd6.conta.dtos.ContaSaidaDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,11 @@ public class ContaController {
     public Conta pagarConta(@PathVariable int id) {
         Conta contaASerPaga = contaService.atualizarStatusDaConta(id);
         return contaASerPaga;
+    }
+
+    @GetMapping("/{id}")
+    public ContaDetailsDTO exibirContaCadastrada(@PathVariable int id) {
+        Conta conta = contaService.buscarConta(id);
+        return modelMapper.map(conta, ContaDetailsDTO.class);
     }
 }
