@@ -8,6 +8,7 @@ import br.com.zup.DesafioModulo5_TesteMd6.enums.Tipo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -92,5 +93,12 @@ public class ContaServiceTeste {
 
     }
 
+    @Test
+    public void testarAtualizacaoDeStatusDaContaParaPago(){
+        Mockito.when(contaService.buscarConta(1)).thenReturn(conta);
 
+        Conta contaComStatusPago = contaService.atualizarStatusDaConta(1);
+
+        Assertions.assertEquals(conta.getStatus(), Status.PAGO);
+    }
 }
